@@ -24,8 +24,7 @@ class Task(object):
       return rules
 
     def t3(self):
-      rules = self.t2()
-      fraud_rules = rules[rules['consequents'] == frozenset({'Class'})]
+      fraud_rules = self.rules[self.rules['consequents'] == frozenset({'Class'})]
       fraud_rules = fraud_rules[['antecedents', 'consequents', 'support', 'confidence']]
       return fraud_rules
         
@@ -53,4 +52,5 @@ if __name__ == "__main__":
     print(str(t.t4()) + "\n")
     print("----T5----" + "\n")
     print(str(t.t5()) + "\n")
+
 
