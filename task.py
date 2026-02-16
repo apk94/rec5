@@ -15,20 +15,31 @@ class Task(object):
 
 
     def t1(self):
-        return None
+      frequent_itemsets2 = apriori(self.data, min_support=0.3, use_colnames=True)
+      return frequent_itemsets2
 
     def t2(self):
-        return None
+      rules = association_rules(self.frequent_itemsets, metric="confidence", min_threshold=0.9)
+      rules = rules[['antecedents', 'consequents', 'support', 'confidence']]
+      return rules
 
     def t3(self):
-        return None
+      rules = self.t2()
+      fraud_rules = rules[rules['consequents'] == frozenset({'Class'})]
+      fraud_rules = fraud_rules[['antecedents', 'consequents', 'support', 'confidence']]
+      return fraud_rules
         
     def t4(self):
-        return None
+     fraud_rules = self.t3()
+     most_common = fraud_rules.sort_values('support', ascending=False).head(1)
+     most_common = most_common[['antecedents', 'consequents', 'support', 'confidence']]
+     return most_common
 
     def t5(self):
-        return None
-
+     fraud_rules = self.t3()
+     most_consistent = fraud_rules.sort_values('confidence', ascending=False).head(1)
+     most_consistent = most_consistent[['antecedents', 'consequents', 'support', 'confidence']]
+     return most_consistent
 
 if __name__ == "__main__":
     t = Task('creditcard_public.csv')
@@ -42,3 +53,4 @@ if __name__ == "__main__":
     print(str(t.t4()) + "\n")
     print("----T5----" + "\n")
     print(str(t.t5()) + "\n")
+
